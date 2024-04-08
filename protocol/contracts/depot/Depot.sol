@@ -84,9 +84,9 @@ contract Depot is DepotFacet, TokenSupportFacet {
         To toMode
     ) external payable {
         if (fromMode == From.EXTERNAL) {
-            token.safeTransferFrom(msg.sender, recipient, amount);
+            require(token.safeTransferFrom(msg.sender, recipient, amount), "Token transfer failed");
         } else if (fromMode == From.INTERNAL) {
-            beanstalk.transferInternalTokenFrom(token, msg.sender, recipient, amount, toMode);
+            require(beanstalk.transferInternalTokenFrom(token, msg.sender, recipient, amount, toMode), "Token transfer failed");
         } else {
             revert("Mode not supported");
         }
